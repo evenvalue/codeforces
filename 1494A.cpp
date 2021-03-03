@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-bool check(string &s) {
+bool check(const string &s) {
   int cnt = 0;
   for (char c : s) {
     if (c == '(') {
