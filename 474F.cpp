@@ -19,25 +19,22 @@ class SegTree {
   vector<node> t;
 
   static node unite(const node l, const node r) {
-    int val = gcd(l.val, r.val);
+    const int val = gcd(l.val, r.val);
     return {val, ((l.val == val) * l.freq) + ((r.val == val) * r.freq)};
   }
 
 public:
   explicit SegTree(const int n) : t(2 * n - 1) {}
 
-  void update(const int x, const int l, const int r, const int pos, const int upd) {
+  void build(const int x, const int l, const int r, const vector<int> &a) {
     if (l == r) {
-      t[x] = {upd, 1};
+      t[x] = {a[l], 1};
       return;
     }
     const int mid = (l + r) / 2;
     const int y = 2 * (mid - l + 1) + x;
-    if (pos <= mid) {
-      update(x + 1, l, mid, pos, upd);
-    } else {
-      update(y, mid + 1, r, pos, upd);
-    }
+    build(x + 1, l, mid, a);
+    build(y, mid + 1, r, a);
     t[x] = unite(t[x + 1], t[y]);
   }
 
@@ -60,12 +57,12 @@ public:
 int main() {
   int n;
   cin >> n;
-  SegTree st(n);
-  for (int i = 0; i < n; i++) {
-    int x;
+  vector<int> a(n);
+  for (int &x : a) {
     cin >> x;
-    st.update(0, 0, n - 1, i, x);
   }
+  SegTree st(n);
+  st.build(0, 0, n - 1, a);
   int t;
   cin >> t;
   while (t--) {
