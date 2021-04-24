@@ -1,6 +1,6 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <map>
 using namespace std;
 
 #define int64 int64_t
@@ -19,16 +19,16 @@ int main() {
     for (int i = 1; i <= n; i++) {
       char c;
       cin >> c;
-      pref[i] = pref[i - 1] + (c - '0' - 1);
+      pref[i] = pref[i - 1] + (c - '0') - 1;
     }
-    map<int, int> freq;
-    for (int i = 0; i <= n; i++) {
-      freq[pref[i]]++;
-    }
+    sort(pref.begin(), pref.end());
+    int old = 0, streak = 0;
     int64 ans = 0;
-    for (const pair<int, int> p : freq) {
-      const int x = p.second;
-      ans += 1LL * x * (x - 1) / 2;
+    for (const int x : pref) {
+      streak = (x == old ? streak : 0);
+      ans += streak;
+      old = x;
+      streak++;
     }
     cout << ans << "\n";
   }
