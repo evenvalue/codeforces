@@ -102,3 +102,4 @@ add_executable(987C 987C.cpp)
 add_executable(998B 998B.cpp)
 
 #codeforces gym
+add_executable(102644A 102644A.cpp)
