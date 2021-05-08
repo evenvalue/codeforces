@@ -46,6 +46,6 @@ int main() {
   int64 n;
   cin >> n;
   matrix m(2);
-  m.a = {{0, 1}, {1, 1,}};
+  m.a = {{0, 1}, {1, 1}};
   cout << binpow(m, n).a[1][0] << "\n";
 }
