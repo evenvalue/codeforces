@@ -6,6 +6,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wshadow -Wformat=2 -Wfloat-
 
 #codeforces problemset
 add_executable(1029B 1029B.cpp)
+add_executable(103B 103B.cpp)
 add_executable(1040B 1040B.cpp)
 add_executable(1042B 1042B.cpp)
 add_executable(1097B 1097B.cpp)
