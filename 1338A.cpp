@@ -2,8 +2,6 @@
 #include <vector>
 using namespace std;
 
-#define debug(x) cerr << #x << ": " << x << '\n'
-
 int bit_count(int x) {
   int cnt = 0;
   while (x) {
