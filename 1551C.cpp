@@ -33,9 +33,9 @@ bool comp(const cnt &x, const cnt &y, const int i) {
   return contrib_x > contrib_y;
 }
 
-bool check(const cnt &f, const int i) {
-  const int sum = accumulate(f.a.begin(), f.a.end(), 0);
-  return (sum - f.a[i] < f.a[i]);
+bool check(const cnt &c, const int i) {
+  const int sum = accumulate(c.a.begin(), c.a.end(), 0);
+  return (sum - c.a[i] < c.a[i]);
 }
 
 void solve() {
