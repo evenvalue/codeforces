@@ -29,8 +29,8 @@ public:
     free = 1;
   }
 
-  // Adds string s to the trie.
-  // Time Complexity: O(s.length()).
+  //Adds string s to the trie.
+  //Time Complexity: O(s.length()).
   void add(const string &s) {
     int x = 0;
     for (const char c : s) {
