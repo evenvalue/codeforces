@@ -27,8 +27,8 @@ void solve() {
   }
   sort(exams.begin(), exams.end());
   int64 write = 0;
-  for (int i = 0; i < n and sum < req; i++) {
-    const auto [b, a] = exams[i];
+  for (auto [b, a] : exams) {
+    if (sum >= req) break;
     write += min((int64)r - a, req - sum) * b;
     sum += min((int64)r - a, req - sum);
   }
