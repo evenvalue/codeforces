@@ -19,7 +19,7 @@ const int kMod = 1e9 + 7;
 void solve() {
   int a, b;
   cin >> a >> b;
-  cout << (int64)a * (to_string(b + 1).length() - 1) << '\n';1
+  cout << (int64)a * (to_string(b + 1).length() - 1) << '\n';
 }
 
 int main() {
