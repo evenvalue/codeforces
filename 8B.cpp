@@ -1,10 +1,10 @@
 #include <algorithm>
-#include <map>
 #include <array>
 #include <cassert>
 #include <cmath>
 #include <functional>
 #include <iostream>
+#include <map>
 #include <numeric>
 #include <string>
 #include <vector>
