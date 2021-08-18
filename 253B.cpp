@@ -2,12 +2,12 @@
 #include <array>
 #include <cassert>
 #include <cmath>
+#include <fstream>
 #include <functional>
 #include <iostream>
 #include <numeric>
 #include <string>
 #include <vector>
-#include <fstream>
 using namespace std;
 
 #define debug(x) cerr << #x << ": " << x << '\n'
@@ -28,7 +28,7 @@ void solve() {
   sort(a.begin(), a.end());
   int ans = n;
   for (int i = 0; i < n; i++) {
-    ans = min(ans, i + (int)distance(upper_bound(a.begin(), a.end(), 2 * a[i]), a.end()));
+    ans = min(ans, i + (int) distance(upper_bound(a.begin(), a.end(), 2 * a[i]), a.end()));
   }
   fout << ans << '\n';
 }
