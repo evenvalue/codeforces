@@ -331,3 +331,5 @@ add_executable(102644B 102644B.cpp)
 add_executable(102644C 102644C.cpp)
 add_executable(102644D 102644D.cpp)
 add_executable(103091A 103091A.cpp)
+
+#codeforces edu
