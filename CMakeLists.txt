@@ -338,3 +338,4 @@ add_executable(102644D 102644D.cpp)
 add_executable(103091A 103091A.cpp)
 
 #codeforces edu
+add_executable(273169A 273169A.cpp)
