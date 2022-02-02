@@ -138,7 +138,7 @@ class SegTree {
    }
 
 public:
-  explicit SegTree(const int n) : n(n + 1), t(2 * (n + 1) - 1) {}
+  explicit SegTree(const int n) : n(n), t(2 * n - 1) {}
 
   int query(const int x) {
     if (x == 1) return 0;
