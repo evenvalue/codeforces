@@ -1,52 +1,56 @@
-#include <algorithm>
-#include <array>
-#include <cassert>
-#include <chrono>
-#include <cmath>
-#include <cstdio>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <set>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
+using namespace __gnu_pbds;
 
 using int64 = int64_t;
 using ld = long double;
 
-[[maybe_unused]] int readInt() {
+template<typename T>
+using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+template<typename T>
+using ordered_multiset = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
+
+template<typename T>
+using min_heap = priority_queue<T, vector<T>, greater<T>>;
+template<typename T>
+using max_heap = priority_queue<T, vector<T>, less<T>>;
+
+int readInt() {
   int x;
   cin >> x;
   return x;
 }
-[[maybe_unused]] int64 readInt64() {
+int64 readInt64() {
   int64 x;
   cin >> x;
   return x;
 }
-[[maybe_unused]] string readString() {
+char readChar() {
+  char c;
+  cin >> c;
+  return c;
+}
+string readString() {
   string s;
   cin >> s;
   return s;
 }
-[[maybe_unused]] double readDouble() {
+double readDouble() {
   return stod(readString());
 }
-[[maybe_unused]] ld readLongDouble() {
+ld readLongDouble() {
   return stold(readString());
 }
 template<typename T1, typename T2>
-[[maybe_unused]] pair<T1, T2> readPair() {
+pair<T1, T2> readPair() {
   pair<T1, T2> p;
   cin >> p.first >> p.second;
   return p;
 }
 template<typename T>
-[[maybe_unused]] vector<T> readVec(const int sz) {
+vector<T> readVec(const int sz) {
   vector<T> v(sz);
   for (T &x : v) {
     cin >> x;
@@ -54,7 +58,7 @@ template<typename T>
   return v;
 }
 template<typename T>
-[[maybe_unused]] vector<vector<T>> readVecVec(const int n, const int m) {
+vector<vector<T>> readVecVec(const int n, const int m) {
   vector<vector<T>> a(n);
   for (vector<T> &v : a) {
     v = readVec<T>(m);
@@ -62,126 +66,91 @@ template<typename T>
   return a;
 }
 
-const int64 kInf64 = 2e18 + 10;
-const int kInf = 1e9 + 10;
-const int kMod = 1e9 + 7;
-
-namespace cp {
-class mo_s {
+class Mo_s {
   struct query {
-    int l, r, t;
-    int64 ans;
-
-    query(const int l, const int r, const int t) : l(l), r(r), t(t), ans(0) {}
+    int idx;
+    int l, r;
   };
 
-  const int kBlockSize = 600;
-  const int n;
-  const vector<int> a;
-  vector<query> queries;
+  static const int kBlock = 500;
 
-  int block_of(const int i) const {
-    return i / kBlockSize;
+  static int block(const int i) {
+    return i / kBlock;
   }
 
-public:
-  explicit mo_s(const vector<int> &a) : n(a.size()), a(a) {}
+  vector<query> queries;
+  const vector<int> a;
 
-  void add_query(const int l, const int r, const int t) {
-    queries.emplace_back(l, r, t);
+public:
+  Mo_s(const vector<int> &a) : a(a) {}
+
+  void add(const int l, const int r) {
+    queries.push_back({(int)queries.size(), l, r});
   }
 
   vector<int64> solve() {
-    sort(queries.begin(), queries.end(), [&](const query &q1, const query &q2) {
-      if (block_of(q1.l) != block_of(q2.l)) {
+    sort(queries.begin(), queries.end(), [](const query &q1, const query &q2) {
+      if (block(q1.l) != block(q2.l)) {
         return q1.l < q2.l;
       }
-      return (block_of(q1.l) & 1 ? (q1.r < q2.r) : (q2.r < q1.r));
+      return (block(q1.l) & 1 ? q1.r > q2.r : q1.r < q2.r);
     });
 
-    vector<int> freq(1e6 + 1);
+    vector<int> freq(1e6 + 5);
+
     int64 ans = 0;
-
-    auto add = [&](const int idx) {
-      const int x = a[idx];
-      int &fx = freq[x];
-      ans -= fx * 1LL * fx * 1LL * x;
-      fx++;
-      ans += fx * 1LL * fx * 1LL * x;
+    
+    auto add = [&](const int i) {
+      ans -= (freq[a[i]] * 1LL * freq[a[i]] * 1LL * a[i]);
+      freq[a[i]]++;
+      ans += (freq[a[i]] * 1LL * freq[a[i]] * 1LL * a[i]);
     };
 
-    auto remove = [&](const int idx) {
-      const int x = a[idx];
-      int &fx = freq[x];
-      ans -= fx * 1LL * fx * 1LL * x;
-      fx--;
-      ans += fx * 1LL * fx * 1LL * x;
+    auto del = [&](const int i) {
+      ans -= (freq[a[i]] * 1LL * freq[a[i]] * 1LL * a[i]);
+      freq[a[i]]--;
+      ans += (freq[a[i]] * 1LL * freq[a[i]] * 1LL * a[i]);
     };
 
-    for (int i = 0, l = 0, r = -1; i < queries.size(); i++) {
-      while (l < queries[i].l) {
-        remove(l);
-        l++;
-      }
-      while (l > queries[i].l) {
-        l--;
-        add(l);
-      }
-      while (r < queries[i].r) {
-        r++;
-        add(r);
-      }
-      while (r > queries[i].r) {
-        remove(r);
-        r--;
-      }
-      queries[i].ans = ans;
+    vector<int64> answer(queries.size());
+
+    for (int l = 0, r = -1, i = 0; i < queries.size(); i++) {
+      while (l < queries[i].l) del(l++);
+      while (l > queries[i].l) add(--l);
+      while (r < queries[i].r) add(++r);
+      while (r > queries[i].r) del(r--);
+      answer[queries[i].idx] = ans;
     }
 
-    sort(queries.begin(), queries.end(), [](const query &q1, const query &q2) {
-      return q1.t < q2.t;
-    });
-    vector<int64> v(queries.size());
-    for (int i = 0; const query &q : queries) {
-      v[i] = q.ans;
-      i++;
-    }
-    return v;
+    return answer;
   }
 };
-}// namespace cp
 
 void solution() {
-  const int n = readInt(), q = readInt();
+  const int n = readInt(), t = readInt();
   const vector<int> &a = readVec<int>(n);
-  cp::mo_s mo(a);
-  for (int i = 0; i < q; i++) {
+  Mo_s mo(a);
+  for (int query = 0; query < t; query++) {
     const int l = readInt() - 1, r = readInt() - 1;
-    mo.add_query(l, r, i);
+    mo.add(l, r);
   }
-  const vector<int64> &ans = mo.solve();
-  for (const int64 x : ans) {
+  const vector<int64> ans = mo.solve();
+  for (const int64 &x : ans) {
     cout << x << '\n';
   }
+  cout << '\n';
 }
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  cout.tie(nullptr);
 
-  const auto begin = std::chrono::high_resolution_clock::now();
+  // freopen(".in", "r", stdin);
+  // freopen(".out", "w", stdout);
 
-  //  freopen(".in", "r", stdin);
-  //  freopen(".out", "w", stdout);
-
-  int t = 1;
-  //cin >> t;
-  for (int tc = 1; tc <= t; tc++) {
+  int testcases = 1;
+  //cin >> testcases;
+  while (testcases--) {
     solution();
   }
-
-  const auto end = std::chrono::high_resolution_clock::now();
-  const auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
-  cerr << "Time measured: " << elapsed.count() * 1e-9 << " seconds.\n";
 }
