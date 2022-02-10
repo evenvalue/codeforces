@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.17)
 project(Codeforces)
+
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wshadow -Wformat=2 -Wfloat-equal -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wshadow -Wformat=2 -Wfloat-equal -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fno-sanitize-recover=all -fstack-protector")
+
 #codeforces problemset
 add_executable(1020A 1020A.cpp)
 add_executable(1020B 1020B.cpp)
@@ -316,6 +318,7 @@ add_executable(550C 550C.cpp)
 add_executable(580A 580A.cpp)
 add_executable(580B 580B.cpp)
 add_executable(580C 580C.cpp)
+add_executable(597C 597C.cpp)
 add_executable(602B 602B.cpp)
 add_executable(616D 616D.cpp)
 add_executable(61E 61E.cpp)
