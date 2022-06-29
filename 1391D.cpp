@@ -79,7 +79,7 @@ constexpr int kInf = 1e9 + 10;
 constexpr int64 kInf64 = 1e15 + 10;
 constexpr int kMod = 1e9 + 7;
 
-vector<string> rotate(const vector<string> &v, int &n, int &m) {
+vector<string> transpose(const vector<string> &v, int &n, int &m) {
   swap(n, m);
   vector<string> new_v(n, string(m, '0'));
   for (int i = 0; i < n; i++) {
@@ -91,11 +91,12 @@ vector<string> rotate(const vector<string> &v, int &n, int &m) {
 }
 
 vector<int> convert(const vector<string> &v, const int n, const int m) {
+  assert(0 < n and n <= m);
+  assert(n <= 3);
   vector<int> a(m);
-  for (int i = 0; i < m; i++) {
-    for (int j = 0; j < n; j++) {
-      if (v[j][i] == '0') continue;
-      a[i] += (1 << j);
+  for (int row = 0; row < n; row++) {
+    for (int col = 0; col < m; col++) {
+      a[col] = (1 << row) * (v[row][col] - '0');
     }
   }
   return a;
@@ -123,7 +124,7 @@ inline void solution() {
     return;
   }
 
-  const vector<int> a = convert((n > m) ? rotate(v, n, m) : v, n, m);
+  const vector<int> a = convert((n > m) ? transpose(v, n, m) : v, n, m);
 
   vector<vector<int>> dp(m, vector<int>(1 << n, kInf));
   for (int mask = 0; mask < (1 << n); mask++) {
