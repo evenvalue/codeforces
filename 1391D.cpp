@@ -96,7 +96,7 @@ vector<int> convert(const vector<string> &v, const int n, const int m) {
   vector<int> a(m);
   for (int row = 0; row < n; row++) {
     for (int col = 0; col < m; col++) {
-      a[col] = (1 << row) * (v[row][col] - '0');
+      a[col] += (1 << row) * (v[row][col] - '0');
     }
   }
   return a;
