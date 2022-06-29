@@ -80,20 +80,13 @@ constexpr int64 kInf64 = 1e15 + 10;
 constexpr int kMod = 1e9 + 7;
 
 inline void solution() {
-  const int n = read::Int(), m = read::Int();
+  const int n = read::Int(), m = read::Int(), kMaxMask = (1 << m) - 1;
   const vector<vector<int>> a = read::VecVec<int>(n, m);
 
   vector<int> masks(1 << m);
 
-  int i = 0, j = 0;
-
-  auto clear = [&]() {
-    for (int &mask : masks) {
-      mask = 0;
-    }
-  };
-
-  auto check = [&](const int x) -> bool {
+  auto check = [&](const int x) -> pair<int, int> {
+    fill(masks.begin(), masks.end(), 0);
     for (int row = 0; row < n; row++) {
       int num = 0;
       for (int col = 0; col < m; col++) {
@@ -102,33 +95,30 @@ inline void solution() {
       masks[num] = row + 1;
     }
 
-    for (int mask1 = 0; mask1 < (1 << m); mask1++) {
+    for (int mask1 = 0; mask1 <= kMaxMask; mask1++) {
       if (masks[mask1] == 0) continue;
-      for (int mask2 = mask1; mask2 < (1 << m); mask2++) {
+      for (int mask2 = mask1; mask2 <= kMaxMask; mask2++) {
         if (masks[mask2] == 0) continue;
         if ((mask1 | mask2) == ((1 << m) - 1)) {
-          i = masks[mask1], j = masks[mask2];
-          clear();
-          return true;
+          return {masks[mask1], masks[mask2]};
         }
       }
     }
-
-    clear();
-    return false;
+    return {-1, -1};
   };
 
-  int lo = -1, hi = 1e9 + 10;
+  int lo = 0, hi = 1e9 + 10;
   while (lo < hi) {
     const int mid = (lo + hi + 1) / 2;
-    if (check(mid)) {
+    if (check(mid) != make_pair(-1, -1)) {
       lo = mid;
     } else {
       hi = mid - 1;
     }
   }
 
-  cout << i << ' ' << j << '\n';
+  const auto [row1, row2] = check(lo);
+  cout << row1 << ' ' << row2 << '\n';
 }
 
 int32_t main() {
