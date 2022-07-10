@@ -79,7 +79,6 @@ constexpr int kInf = 1e9 + 10;
 constexpr int64 kInf64 = 1e15 + 10;
 constexpr int kMod = 1e9 + 7;
 
-
 inline void solution() {
   const int n = read::Int(), k = read::Int();
   vector<int> a(n);
