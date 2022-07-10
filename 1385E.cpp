@@ -108,15 +108,18 @@ inline void solution() {
     auto &g = (t ? directed : undirected);
     g[x].push_back(y);
   }
-  auto [yes, topsort] = topological_sort(directed);
+  const auto [yes, topsort] = topological_sort(directed);
   if (not yes) {
     cout << "NO\n";
     return;
   }
-  vector<int> index(n);
-  for (int i = 0; i < n; i++) {
-    index[topsort[i]] = i;
-  }
+  const vector<int> index = [&, topsort = topsort]() -> vector<int> {
+    vector<int> index;
+    for (int i = 0; i < n; i++) {
+      index[topsort[i]] = i;
+    }
+    return index;
+  }();
   cout << "YES\n";
   for (int x = 0; x < n; x++) {
     for (const int y : directed[x]) {
