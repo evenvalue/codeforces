@@ -71,68 +71,57 @@ constexpr int kInf = 1e9 + 10;
 constexpr int64 kInf64 = 1e15 + 10;
 constexpr int kMod = 1e9 + 7;
 
-class LineContainer {
-  struct Line {
-    int64 m, c;
-    mutable int64 p;
-    bool operator<(int64 x) const {
-      return p < x;
-    }
-    bool operator<(const Line &other) const {
-      return (m == other.m ? c < other.c : m < other.m);
-    }
-  };
+struct Line {
+  int64 m, c;
+  mutable int64 p;
+  bool operator<(const Line &other) const {
+    return m < other.m;
+  }
+  bool operator<(int64 x) const {
+    return p < x;
+  }
+};
 
-  using Lines = set<Line, std::less<>>;
-  const int64 kInf = 1e18;
-  Lines lines;
+struct LineContainer : std::multiset<Line, std::less<>> {
+private:
+  static const int64 kInfinity = LLONG_MAX;
 
   static int64 div(int64 a, int64 b) {
     return a / b - ((a ^ b) < 0 and a % b);
   }
 
-  int64 update(const Line &a, const Line &b) const {
-    if (a.m == b.m) {
-      a.p = (a.c > b.c) ? kInf : -kInf;
+  bool isect(iterator x, iterator y) const {
+    if (y == end()) {
+      x->p = kInfinity;
+      return false;
+    } else if (x->m == y->m) {
+      x->p = x->c > y->c ? kInfinity : -kInfinity;
     } else {
-      a.p = div(b.c - a.c, a.m - b.m);
+      x->p = div(y->c - x->c, x->m - y->m);
     }
-    return a.p;
-  }
-
-  bool ends(auto it) {
-    return (it == lines.begin() or it == lines.end());
+    return x->p >= y->p;
   }
 
 public:
-  void add(int64 slope, int64 intercept) {
-    auto [y, _] = lines.insert(Line{slope, intercept, kInf});
-
-    // try deleting next lines
-    auto nxt = next(y);
-    while (not ends(nxt) and update(*y, *nxt) >= nxt->p) {
-      nxt = lines.erase(nxt);
+  void add(int64 m, int64 c) {
+    auto z = insert({m, c, 0});
+    auto y = z++;
+    auto x = y;
+    while (isect(y, z)) {
+      z = erase(z);
     }
-
-    // try deleting current line.
-    if (not ends(y) and update(*prev(y), *y) >= y->p) {
-      update(*prev(y), *lines.erase(y));
-      return;
+    if (x != begin() and isect(--x, y)) {
+      isect(x, y = erase(y));
     }
-
-    // try deleting previous lines.
-    while (not ends(y) and update(*prev(y), *y) >= y->p) {
-      lines.erase(prev(y));
+    while ((y = x) != begin() and (--x)->p >= y->p) {
+      isect(x, erase(y));
     }
   }
 
   [[nodiscard]] int64 query(int64 x) const {
-    const Line l = *lines.lower_bound(x);
-    return (l.m * x) + (l.c);
-  }
-
-  [[nodiscard]] auto size() const {
-    return lines.size();
+    assert(!empty());
+    auto l = *lower_bound(x);
+    return l.m * x + l.c;
   }
 };
 
