@@ -91,7 +91,8 @@ private:
 
   bool isect(iterator x, iterator y) const {
     if (y == end()) {
-      return x->p = kInfinity, 0;
+      x->p = kInfinity;
+      return false;
     } else if (x->m == y->m) {
       x->p = x->c > y->c ? kInfinity : -kInfinity;
     } else {
