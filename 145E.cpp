@@ -170,15 +170,7 @@ public:
 inline void solution() {
   struct node {
     bool flip = false;
-    array<array<int, 2>, 2> len;
-
-    node() {
-      for (const int i : {0, 1}) {
-        for (const int j : {0, 1}) {
-          len[i][j] = 0;
-        }
-      }
-    }
+    array<array<int, 2>, 2> len{};
   };
 
   auto unite = [](const node &l, const node &r) {
