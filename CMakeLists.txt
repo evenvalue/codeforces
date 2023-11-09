@@ -450,6 +450,7 @@ add_executable(102644B 102644B.cpp)
 add_executable(102644C 102644C.cpp)
 add_executable(102644D 102644D.cpp)
 add_executable(103091A 103091A.cpp)
+add_executable(103536A 103536A.cpp)
 #codeforces edu
 add_executable(273169A 273169A.cpp)
 add_executable(273169B 273169B.cpp)
