@@ -1,0 +1,129 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#ifdef evenvalue
+  #include "debug.h"
+#else
+  #define debug(...)
+#endif
+
+using int64 = long long;
+using ld = long double;
+
+template<typename T>
+using min_heap = priority_queue<T, vector<T>, greater<T>>;
+template<typename T>
+using max_heap = priority_queue<T, vector<T>, less<T>>;
+
+namespace read {
+int Int() {
+  int x;
+  cin >> x;
+  return x;
+}
+int64 Int64() {
+  int64 x;
+  cin >> x;
+  return x;
+}
+char Char() {
+  char c;
+  cin >> c;
+  return c;
+}
+string String() {
+  string s;
+  cin >> s;
+  return s;
+}
+double Double() {
+  return stod(String());
+}
+ld LongDouble() {
+  return stold(String());
+}
+template<typename T1, typename T2>
+pair<T1, T2> Pair() {
+  pair<T1, T2> p;
+  cin >> p.first >> p.second;
+  return p;
+}
+template<typename T>
+vector<T> Vec(const int n) {
+  vector<T> v(n);
+  for (T &x : v) {
+    cin >> x;
+  }
+  return v;
+}
+template<typename T>
+vector<vector<T>> VecVec(const int n, const int m) {
+  vector<vector<T>> v(n);
+  for (vector<T> &vec : v) {
+    vec = Vec<T>(m);
+  }
+  return v;
+}
+}//namespace read
+
+constexpr int kInf = 1e9 + 10;
+constexpr int64 kInf64 = 1e15 + 10;
+constexpr int kMod = 1e9 + 7;
+constexpr int kMaxN = 2e5 + 10;
+
+struct triple {
+  int r;
+  int g;
+  int b;
+};
+
+inline void solution() {
+  const int kRed = read::Int();
+  const int kGreen = read::Int();
+  const int kBlue = read::Int();
+
+  vector<int> red = read::Vec<int>(kRed);
+  vector<int> green = read::Vec<int>(kGreen);
+  vector<int> blue = read::Vec<int>(kBlue);
+
+  sort(red.begin(), red.end());
+  sort(green.begin(), green.end());
+  sort(blue.begin(), blue.end());
+
+  vector<vector<vector<int>>> dp(kRed + 1, vector<vector<int>>(kGreen + 1, vector<int>(kBlue + 1)));
+
+  vector<triple> delta = {{0, 1, 1}, {1, 0, 1}, {1, 1, 0}};
+
+  for (int r = 0; r <= kRed; r++) {
+    for (int g = 0; g <= kGreen; g++) {
+      for (int b = 0; b <= kBlue; b++) {
+        for (auto [dr, dg, db] : delta) {
+          if (dr > r or dg > g or db > b) continue;
+          int rect = 0;
+          if (dr == 0) rect = green[g - 1] * blue[b - 1];
+          if (dg == 0) rect = red[r - 1] * blue[b - 1];
+          if (db == 0) rect = red[r - 1] * green[g - 1];
+          dp[r][g][b] = max(dp[r][g][b], dp[r - dr][g - dg][b - db] + rect);
+        }
+      }
+    }
+  }
+
+  cout << dp[kRed][kGreen][kBlue] << '\n';
+}
+
+int32_t main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  //freopen(".in", "r", stdin);
+  //freopen(".out", "w", stdout);
+
+  cout << fixed << setprecision(10);
+
+  int testcases = 1;
+  //cin >> testcases;
+  while (testcases--) {
+    solution();
+  }
+}
