@@ -488,6 +488,7 @@ add_executable(981C 981C.cpp)
 add_executable(982C 982C.cpp)
 add_executable(983B 983B.cpp)
 add_executable(987C 987C.cpp)
+add_executable(997B 997B.cpp)
 add_executable(998B 998B.cpp)
 #codeforces gym
 add_executable(101021A 101021A.cpp)
