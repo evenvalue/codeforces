@@ -1,0 +1,173 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#ifdef evenvalue
+  #include "debug.h"
+#else
+  #define debug(...)
+#endif
+
+using int64 = long long;
+using ld = long double;
+
+template<typename T>
+using min_heap = priority_queue<T, vector<T>, greater<T>>;
+template<typename T>
+using max_heap = priority_queue<T, vector<T>, less<T>>;
+
+namespace Read {
+int Int() {
+  int x;
+  cin >> x;
+  return x;
+}
+int64 Int64() {
+  int64 x;
+  cin >> x;
+  return x;
+}
+char Char() {
+  char c;
+  cin >> c;
+  return c;
+}
+string String() {
+  string s;
+  cin >> s;
+  return s;
+}
+double Double() {
+  return stod(String());
+}
+ld LongDouble() {
+  return stold(String());
+}
+template<typename T1, typename T2>
+pair<T1, T2> Pair() {
+  pair<T1, T2> p;
+  cin >> p.first >> p.second;
+  return p;
+}
+template<typename T>
+vector<T> Vec(const int n) {
+  vector<T> v(n);
+  for (T &x : v) {
+    cin >> x;
+  }
+  return v;
+}
+template<typename T>
+vector<vector<T>> VecVec(const int n, const int m) {
+  vector<vector<T>> v(n);
+  for (vector<T> &vec : v) {
+    vec = Vec<T>(m);
+  }
+  return v;
+}
+}//namespace Read
+
+constexpr int kInf = 1e9 + 10;
+constexpr int64 kInf64 = 1e15 + 10;
+constexpr int kMod = 1e9 + 7;
+constexpr int kMaxN = 2e5 + 10;
+
+int ask(const int i) {
+  cout << "? " << i + 1 << endl;
+  const char c = Read::Char();
+  if (c == '>') return 1;
+  if (c == '<') return -1;
+  return 0;
+}
+
+void say(const vector<int> &ans) {
+  cout << "! ";
+  for (const int x : ans) {
+    cout << x << ' ';
+  }
+  cout << endl;
+}
+
+vector<int> ans;
+void solve(const int l, const int r, int &x, const vector<int> &indices) {
+  if (l > r) return;
+  if (l == r) {
+    ans[indices[0]] = l;
+    return;
+  }
+
+  const int m = indices.size();
+
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> distrib(0, m - 1);
+
+  const int idx = indices[distrib(gen)];
+  for (int delta = ask(idx); delta != 0; delta = ask(idx)) {
+    x += delta;
+  }
+
+  ans[idx] = x;
+
+  vector<int> lesser;
+  vector<int> greater;
+
+  for (const int i : indices) {
+    if (i == idx) continue;
+    const int delta = ask(i);
+    ask(idx);
+
+    if (delta == -1) lesser.push_back(i);
+    if (delta == +1) greater.push_back(i);
+  }
+
+  solve(l, ans[idx] - 1, x, lesser);
+  solve(ans[idx] + 1, r, x, greater);
+}
+
+inline void solution() {
+  const int n = Read::Int();
+
+  int smaller = -1;
+  for (int i = 0; i < n; i++) {
+    bool small = true;
+    for (int delta = ask(i); delta != 0; delta = ask(i)) {
+      if (delta == 1) {
+        small = false;
+        if (smaller == -1) break;
+        ask(smaller);
+        break;
+      }
+    }
+    if (small) smaller = i;
+  }
+
+  ans.assign(n, -1);
+
+  vector<int> indices(n);
+  iota(indices.begin(), indices.end(), 0);
+
+  ans[smaller] = 1;
+  indices.erase(find(indices.begin(), indices.end(), smaller));
+
+  int x = 1;
+  solve(2, n, x, indices);
+  say(ans);
+
+  ans.clear();
+}
+
+int32_t main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  //freopen(".in", "r", stdin);
+  //freopen(".out", "w", stdout);
+
+  cout << fixed << setprecision(10);
+
+  int testcases = 1;
+  cin >> testcases;
+  while (testcases--) {
+    solution();
+  }
+}
