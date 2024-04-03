@@ -4,7 +4,7 @@ project(codeforces)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS_DEBUG "-DLOCAL ${CMAKE_CXX_FLAGS_DEBUG} -Wshadow -Wformat=2 -Wfloat-equal -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fno-sanitize-recover=all")
 
-#codeforces problemset
+# Codeforces Problemset
 add_executable(1000F 1000F.cpp)
 add_executable(1020A 1020A.cpp)
 add_executable(1020B 1020B.cpp)
@@ -572,7 +572,8 @@ add_executable(983B 983B.cpp)
 add_executable(987C 987C.cpp)
 add_executable(997B 997B.cpp)
 add_executable(998B 998B.cpp)
-#codeforces gym
+
+# Codeforces Gym
 add_executable(101021A 101021A.cpp)
 add_executable(102644A 102644A.cpp)
 add_executable(102644B 102644B.cpp)
@@ -580,7 +581,8 @@ add_executable(102644C 102644C.cpp)
 add_executable(102644D 102644D.cpp)
 add_executable(103091A 103091A.cpp)
 add_executable(103536A 103536A.cpp)
-#codeforces edu
+
+# Codeforces Edu
 add_executable(273169A 273169A.cpp)
 add_executable(273169B 273169B.cpp)
 add_executable(273169C 273169C.cpp)
