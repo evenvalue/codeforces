@@ -7,9 +7,6 @@
       <option name="INDENT_INSIDE_CODE_BLOCK" value="2" />
       <option name="INDENT_PREPROCESSOR_DIRECTIVE" value="1" />
     </Objective-C>
-    <clangFormatSettings>
-      <option name="ENABLED" value="true" />
-    </clangFormatSettings>
     <codeStyleSettings language="CMake">
       <indentOptions>
         <option name="INDENT_SIZE" value="2" />
