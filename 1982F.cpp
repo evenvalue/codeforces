@@ -51,26 +51,26 @@ constexpr int64 kInf64 = 1e15 + 10;
 constexpr int kMod = 1e9 + 7;
 constexpr int kMaxN = 2e5 + 10;
 
-struct node {
-  int inc = 0;
-  int min = 0;
-  int max = 0;
-};
-
-node unite(const node &l, const node &r) {
-  node ans;
-  ans.inc = l.inc + r.inc;
-  ans.min = min(l.min, r.min);
-  ans.max = max(l.max, r.max);
-  return ans;
-};
-
 struct SegTree {
+  struct node {
+    int inc = 0;
+    int min = 0;
+    int max = 0;
+  };
+
+  static node unite(const node &l, const node &r) {
+    node ans;
+    ans.inc = l.inc + r.inc;
+    ans.min = min(l.min, r.min);
+    ans.max = max(l.max, r.max);
+    return ans;
+  };
+
   const int n;
   vector<node> t;
 
 public:
-  SegTree(const int n) : n(n), t(2 * n) {}
+  explicit SegTree(const int n) : n(n), t(2 * n) {}
 
   void update(int p, const node &val) {
     for (t[p += n] = val; p > 1; p >>= 1) {
