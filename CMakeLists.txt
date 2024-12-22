@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(codeforces)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS_DEBUG "-DLOCAL ${CMAKE_CXX_FLAGS_DEBUG} -Wshadow -Wformat=2 -Wfloat-equal -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fno-sanitize-recover=all")
+set(CMAKE_CXX_FLAGS_DEBUG "-DLOCAL ${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -pedantic -std=c++20 -Wformat=2 -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fsanitize=address -fsanitize=undefined -fno-sanitize-recover -fstack-protector")
 
 # Codeforces Problemset
 add_executable(1000F 1000F.cpp)
@@ -445,6 +445,7 @@ add_executable(1983C 1983C.cpp)
 add_executable(1983D 1983D.cpp)
 add_executable(1983E 1983E.cpp)
 add_executable(1983F 1983F.cpp)
+add_executable(2022E1 2022E1.cpp)
 add_executable(2023A 2023A.cpp)
 add_executable(2023B 2023B.cpp)
 add_executable(2023C 2023C.cpp)
